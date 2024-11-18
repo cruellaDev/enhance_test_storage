@@ -3,7 +3,7 @@ name: Deploy Next.js to S3 and invalidate CloudFront
 on:
   push:
     branches:
-      - main  # 또는 master, 프로젝트의 기본 브랜치 이름에 맞게 조정
+      - main
   workflow_dispatch:
 
 jobs:
@@ -13,6 +13,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
 
     - name: Install dependencies
       run: npm ci
