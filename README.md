@@ -293,3 +293,129 @@ Repository secret과 환경변수를 사용함으로써 보안성이 강화되�
 
 웹사이트 호스팅, 로드 밸런싱 등에 활용됩니다.
 
+## CDN과 성능 최적화
+
+### 개요
+
+#### 분석 목적
+
+CDN 도입을 통한 웹 애플리케이션의 성능 개선 효과 측정
+
+### 측정 가능 도구 및 분석 지표
+
+1. Chrome DevTools Network 탭에서 측정
+
+    - 주요 체크 항목
+        - Total Load Time: 전체 페이지 로드 시간
+        - DOMContentLoaded: DOM 로드 시간
+        - Finish: 모든 리소스 로드 완료 시간
+        - Size: 전체 다운로드 크기
+
+2. [GTmetrix](https://gtmetrix.com)
+
+3. Chrome DevTools Lighthouse 탭에서 측정
+
+    - 성능 점수 및 주요 지표 확인
+        - First Contentful Paint
+        - Speed Index
+        - Largest Contentful Paint
+
+### 측정 환경
+
+- GTmetrix 테스트 서버: Vancouver, Canada
+- 브라우저: Chrome (최신 버전)
+
+### 성능 측정 결과
+
+#### Chrome DevTools Network 분석
+
+| 측정 항목 | 도입 전 | 도입 후 | 개선율 |
+|-----------|---------|---------|---------|
+| 총 요청 수 | 16 | 16 | - |
+| 전송된 데이터 | 556kB | 274kB | 50.7% |
+| 리소스 크기 | 549kB | 549kB | - |
+| DOMContentLoaded | 684ms | 414ms | 39.5% |
+| Load 완료 | 2.01s | 1.50s | 25.4% |
+| Finish 시간 | 2.26s | 2.12s | 6.2% |
+
+#### GTmetrix 분석
+
+| 측정 항목 | 도입 전 | 도입 후 | 개선율 |
+|-----------|---------|---------|---------|
+| TTFB | 233ms | 26ms | 88.8% |
+| First Contentful Paint | 480ms | 111ms | 76.9% |
+| Largest Contentful Paint | 480ms | 111ms | 76.9% |
+| Time to Interactive | 480ms | 111ms | 76.9% |
+| Fully Loaded Time | 1.0s | 182ms | 81.8% |
+| Total Page Size | 543kB | 265kB | 51.2% |
+| Speed Index | 505ms | 105ms | 79.2% |
+| DOM Content Loaded | 463ms | 6ms | 98.7% |
+
+- 상세 시간 분석
+
+| 구간 | 도입 전 | 도입 후 | 개선율 |
+|------|---------|---------|---------|
+| Redirect Duration | 0ms | 0ms | - |
+| Connect Duration | 104ms | 25ms | 76% |
+| Backend Duration | 129ms | 1ms | 99.2% |
+
+#### Lighthouse 분석
+| 측정 항목 | 도입 전 | 도입 후 | 개선 |
+|-----------|---------|---------|-------|
+| Performance | 98 | 100 | +2 |
+| Accessibility | 100 | 100 | - |
+| Best Practice | 79 | 100 | +21 |
+| SEO | 91 | 91 | - |
+
+- Core Web Vitals
+
+| 측정 항목 | 도입 전 | 도입 후 | 개선율 |
+|-----------|---------|---------|---------|
+| First Contentful Paint | 0.9s | 0.6s | 33.3% |
+| Speed Index | 1.0s | 0.6s | 40% |
+| Largest Contentful Paint | 0.9s | 0.6s | 33.3% |
+| Total Blocking Time | 0ms | 20ms | -20ms |
+| Cumulative Layout Shift | 0.003 | 0 | 100% |
+
+### 주요 개선 사항
+
+#### 데이터 전송 최적화
+
+- 전송 데이터 양 50.7% 감소 (556kB → 274kB)
+- 총 페이지 크기 51.2% 감소 (543kB → 265kB)
+- 효율적인 리소스 전송으로 대역폭 사용 최적화
+
+#### 로딩 성능 향상
+
+- 서버 응답 시간(TTFB) 88.8% 개선
+- 초기 콘텐츠 표시 시간 76.9% 개선
+- 전체 페이지 로드 시간 81.8% 개선
+
+#### 사용자 경험 개선
+
+- Performance 점수 상승 (98 → 100)
+- Best Practice 점수 대폭 상승 (79 → 100)
+- 레이아웃 변동(CLS) 개선 (0.003 → 0)
+
+#### 보안 개선
+
+- `HTTPS` 적용
+- `HTTP`에서 `HTTPS`로 리다이렉트 설정
+
+### 개선 필요 사항
+#### GTmetrix 권장사항
+
+- 정적 자산의 효율적 캐시 정책 적용 필요
+    - 잠재적 절감: 239kB
+
+### 추가 최적화 계획
+
+#### 캐시 정책 최적화
+
+- 정적 자산에 대한 효율적인 캐시 정책 수립
+- 추가 239kB 절감 가능성 검토
+
+#### 지속적인 모니터링
+
+- 성능 지표 모니터링 체계 구축
+- 정기적인 성능 측정 및 최적화
